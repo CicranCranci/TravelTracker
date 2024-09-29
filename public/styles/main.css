@@ -1,0 +1,599 @@
+/* Global settings */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow:auto;
+  /* Ensure no scroll bars appear */
+  box-sizing: border-box;
+}
+
+
+body {
+  background: #21252b;
+  color: #d3ddef;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Full-screen map container */
+.ag-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.ag-canvas_svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.ag-canvas_svg {
+  filter: blur(2px);
+}
+
+/* Header */
+.header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(33, 37, 43, 0.8);
+  padding: 10px;
+  z-index: 2;
+  border-bottom: 1px solid #383d46;
+}
+
+/* Sidebar (optional, adjust or remove as needed) */
+.sidebar {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 200px;
+  background-color: rgba(44, 48, 56, 0.8);
+  padding: 1rem;
+  z-index: 2;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+  color: rgb(8, 175, 175);
+}
+
+.dropdown-menu {
+  display: none;
+  background: #2c2f36;
+  padding: 10px;
+  border-radius: 5px;
+  color: #d3ddef;
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdown-menu.visible {
+  display: block;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+}
+
+.scroll-message {
+  font-size: 32px;
+  color: #f60606;
+  margin-bottom: 10px;
+  animation: fadeInOut 3s infinite;
+}
+
+.arrow-container {
+  perspective: 1000px;
+}
+
+.arrow {
+  width: 30px;
+  height: 30px;
+  border-right: 4px solid #0df34a;
+  border-bottom: 4px solid #09ed46;
+  transform: rotate(45deg);
+  animation: moveArrow 1.5s infinite;
+}
+
+@keyframes moveArrow {
+  0% {
+    transform: rotate(45deg) translateY(0) translateZ(0);
+  }
+
+  50% {
+    transform: rotate(45deg) translateY(10px) translateZ(10px);
+  }
+
+  100% {
+    transform: rotate(45deg) translateY(0) translateZ(0);
+  }
+}
+
+@keyframes fadeInOut {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Legend Container */
+/* Move the legend to the bottom-right */
+.legend-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: red;
+  padding: 10px;
+  z-index: 10000;
+  display: flex !important;
+}
+
+
+/* Legend Items */
+.legend {
+  display: flex;
+  align-items: center;
+}
+/* Legend Items */
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  /* Space between legend items */
+}
+
+.legend-color {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.legend-color.visited {
+  background-color: teal;
+}
+
+.legend-color.unvisited {
+  background-color: #383d46;
+}
+
+.legend span {
+  color: #d3ddef;
+}
+
+/* Information Container */
+.country-info {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+  width: inherit;
+}
+@media (max-width: 768px) {
+  .country-info {
+    position: fixed;
+    top: 110px;
+    /* Move to the top */
+    right: 50px;
+    /* Align to the right */
+    bottom: auto;
+    /* Override the bottom position */
+    left: auto;
+    /* Override the left position */
+    width: 30%;
+    /* Adjust width for mobile screens */
+    height: 10%;
+    max-height: 150px;
+    /* Reduce max height */
+    z-index: 1000;
+  }
+}
+
+.country-info .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #f44336;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.search-container {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  z-index: 3;
+  background-color: rgba(33, 37, 43, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  /* Added margin for separation */
+}
+
+.search-form input {
+  width: 200px;
+  margin-right: 10px;
+  padding: 8px;
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  color: #21252b;
+}
+
+button {
+  text-transform: uppercase;
+  background: teal;
+  border: none;
+  padding: 10px;
+  color: #ffffff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Dropdown container */
+/* Ensure the dropdown menu stays above other elements */
+.dropdown-container {
+  position: absolute;
+  top: 120px;
+  right: 20px;
+  background-color: rgba(33, 37, 43, 0.8);
+  padding: 10px;
+  z-index: 3;
+  /* Increased to stay above the legend */
+  border-radius: 5px;
+  width: 200px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* Visited countries list items */
+#visited-countries-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#visited-countries-list li {
+  padding: 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#visited-countries-list li:hover {
+  background-color: #444b54;
+  color: #ffffff;
+}
+
+/* Highlight the country on the map when hovering over the list item */
+.ag-canvas_svg path.hovered {
+  fill: yellow;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+
+  /* Adjust the search-container for mobile */
+  .search-container {
+    position: sticky;
+    /* Makes the search container sticky */
+    top: 10px;
+    /* Sticks to the top of the screen with slight spacing */
+    right: 10px;
+    /* Align with screen edge */
+    width: 100%;
+    /* Ensure it fits within the mobile screen width */
+    padding: 8px;
+    /* Reduce padding */
+    font-size: 14px;
+    /* Smaller font size */
+    z-index: 4;
+    /* Ensure it stays on top */
+    background-color: rgba(33, 37, 43, 0.9);
+    /* Ensure background visibility */
+    border-radius: 5px;
+  }
+
+/* Adjust the visited-countries-container for mobile */
+#visited-countries-container {
+  position: fixed;
+  /* Fixed positioning to ensure it stays in place */
+  top: 80px !important;
+  /* Positioned below other elements (adjust value if needed) */
+  left: 10px;
+  /* Align to the left side of the screen */
+  width: 45%;
+  /* Adjust width for mobile to fit the screen */
+  padding: 8px;
+  /* Reduce padding */
+  z-index: 11;
+  /* Ensure visibility on top of other elements */
+  background-color: rgba(33, 37, 43, 0.9);
+  /* Darker background for contrast */
+  border-radius: 5px;
+  margin-bottom: 10px;
+  /* Small margin for spacing */
+}
+
+  /* Ensure that the contents of the containers fit well */
+  #visited-countries-container ul li,
+  .search-container input {
+    font-size: 14px;
+    /* Ensure readability on smaller screens */
+  }
+
+/* Adjust the legend container for mobile */
+.legend-container {
+  position: fixed;
+  /* Fixed to the bottom */
+  bottom: 10px;
+  /* Distance from the bottom of the screen */
+  left: 50%;
+  transform: translateX(-50%);
+  top: 75%;
+  /* Horizontally centered */
+  width: 50%;
+  /* Reduce width for smaller screens */
+  height: 5%;
+  padding: 5px;
+  /* Smaller padding for mobile */
+  background-color: rgba(252, 10, 10, 0.75);
+  /* Semi-transparent background */
+  z-index: 3;
+  /* Ensure it stays on top */
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  /* Adjust font size for smaller screens */
+}
+
+  /* Optional: Adjust margins or spacing between elements */
+  #visited-countries-container,
+  .search-container {
+    margin-bottom: 10px;
+    /* Ensure small spacing between them */
+  }
+}
+
+/* Country Image */
+.country-image {
+  width: 150px;
+  height: auto;
+  margin: 10px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#country-input {
+  display: block;
+  margin: 10px 0;
+  z-index: 9999;
+  position: relative;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  margin-top: 20px;
+  margin-left: 20px;
+  border: 1px solid #ccc;
+}
+
+.country-image {
+  position: absolute;
+  transition: all 1s ease-in-out;
+}
+
+/* Zoom effect */
+#zoomed-image {
+  max-width: 80%;
+  max-height: 80%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999;
+}
+
+#zoomed-image-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content,
+#caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+/* Visited countries container */
+#visited-countries-container {
+  position: absolute;
+  top: 160px;
+  right: 20px;
+  z-index: 3;
+  background-color: rgba(33, 37, 43, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  /* Added margin for separation */
+}
+/* Sticky Footer */
+.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  width: 50%;
+  /* Set width to 50% */
+  left: 50%;
+  /* Move the left edge to the center of the page */
+  transform: translateX(-50%);
+  /* Center the footer by shifting it back 50% of its own width */
+  height: 15%;
+  background-color: rgba(33, 37, 43, 0.9);
+  text-align: center;
+  padding: 10px 0;
+  color: #d3ddef;
+  font-size: 14px;
+  z-index: 9999;
+}
+
+.sticky-footer .footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sticky-footer .social-links {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.sticky-footer .social-links li {
+  margin: 0 10px;
+}
+
+.sticky-footer .social-links a {
+  color: #d3ddef;
+  text-decoration: none;
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.sticky-footer .social-links a:hover {
+  color: teal;
+}
+
+.sticky-footer a {
+  color: teal;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sticky-footer a:hover {
+  color: #ffffff;
+}
+
+/* Ensure footer doesn't overlap content */
+body {
+  padding-bottom: 60px;
+  /* Adjust based on footer height */
+}
+.social-links a:hover {
+  color: #fff;
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+@media (max-width: 768px) {
+  .sticky-footer {
+    height: 10%;
+    /* Adjust based on screen space */
+    padding: 5px 0;
+  }
+}
+#map {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
