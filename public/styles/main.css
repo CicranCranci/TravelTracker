@@ -590,6 +590,7 @@ body {
     height: 10%;
     /* Adjust based on screen space */
     padding: 5px 0;
+    bottom: 70px;
   }
 }
 #map {
