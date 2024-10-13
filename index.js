@@ -8,7 +8,9 @@ import dotenv from 'dotenv';
 import { body, validationResult } from 'express-validator';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { Pool } from 'pg';
+import pkg from 'pg';
+const { Pool } = pkg;
+
 
 dotenv.config();
 
