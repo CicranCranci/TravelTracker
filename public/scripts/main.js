@@ -112,8 +112,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleFetchError(context) {
-        return (error) => console.error(`Error fetching ${context}:`, error);
+        return (error) => {
+            console.error(`Error fetching ${context}:`, error);
+            alert(`Failed to fetch ${context}: ${error.message}`);
+        };
     }
+
 
     // Hover effect to highlight country on the map
     visitedCountriesList.addEventListener('mouseover', function (event) {
