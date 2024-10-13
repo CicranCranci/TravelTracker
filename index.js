@@ -130,18 +130,17 @@ app.get('/suggestions', async (req, res) => {
 });
 
 // Get list of visited countries
-app.get('/visited-countries', async (req, res) => {
+app.get('/visited-countries', (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT country_name FROM countries WHERE country_code IN (SELECT country_code FROM visited_countries) LIMIT 100'
-    );
-    const visitedCountries = result.rows.map(row => row.country_name);
+    // Fetch your visited countries here
+    const visitedCountries = []; // Example data
     res.json(visitedCountries);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error fetching visited countries');
+  } catch (error) {
+    console.error('Error fetching visited countries:', error);
+    res.status(500).json({ error: 'Error fetching visited countries' });
   }
 });
+
 
 // Get country info by name
 app.get('/country-info', async (req, res) => {
