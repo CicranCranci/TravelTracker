@@ -1,14 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import pg from 'pg';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import { body, validationResult } from 'express-validator'; // Import express-validator
+import { body, validationResult } from 'express-validator';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import { Pool } from 'pg';
 
 dotenv.config();
 
@@ -16,14 +16,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const { Pool } = pg;
 
+// Set up database connection using environment variables
 const pool = new Pool({
-  user: process.env.DB_USER,
   host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  ssl: { rejectUnauthorized: false },
 });
 
 // Configure multer for file uploads
@@ -44,7 +45,6 @@ app.use(helmet.contentSecurityPolicy({
     scriptSrc: ["'self'", "'unsafe-inline'"],
     connectSrc: ["'self'", "https://api.unsplash.com"],
     imgSrc: ["'self'", "data:", "https://images.unsplash.com"],
-    // Add other directives as needed
   },
 }));
 
@@ -60,7 +60,6 @@ app.get('/', async (req, res) => {
     const result = await pool.query('SELECT country_code FROM visited_countries');
     const countryCodes = result.rows.map(row => row.country_code);
 
-    // Fetch visited country names
     const visitedCountriesResult = await pool.query(
       'SELECT country_name FROM countries WHERE country_code = ANY($1::text[])',
       [countryCodes]
@@ -81,11 +80,11 @@ app.get('/', async (req, res) => {
 
 // Add country to visited countries with validation
 app.post('/add', [
-  body('country').trim().notEmpty().withMessage('Country name is required'), // Validation rule
+  body('country').trim().notEmpty().withMessage('Country name is required'),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() }); // Return validation errors
+    return res.status(400).json({ errors: errors.array() });
   }
 
   const userInput = req.body.country.trim().toLowerCase();
@@ -183,13 +182,11 @@ app.post('/upload-image', upload.single('image'), async (req, res) => {
   const countryName = req.body.country;
   const file = req.file;
 
-  // Ensure the uploads directory for the country exists
   const countryDir = path.join(__dirname, 'public', 'uploads', countryName);
   if (!fs.existsSync(countryDir)) {
     fs.mkdirSync(countryDir, { recursive: true });
   }
 
-  // Move the uploaded file to the country-specific directory
   const newPath = path.join(countryDir, file.originalname);
   fs.renameSync(file.path, newPath);
 
@@ -213,6 +210,7 @@ app.get('/country-images', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
+
 
 
 
