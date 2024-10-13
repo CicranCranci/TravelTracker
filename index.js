@@ -9,8 +9,8 @@ import { body, validationResult } from 'express-validator';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import pkg from 'pg';
-const { Pool } = pkg;
 
+const { Pool } = pkg;
 
 dotenv.config();
 
@@ -19,14 +19,16 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Set up database connection using environment variables
+// Create a new pool for database connections
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  ssl: { rejectUnauthorized: false },
+  ssl: {
+    rejectUnauthorized: false, // This is needed for Render
+  },
 });
 
 // Configure multer for file uploads
@@ -212,6 +214,7 @@ app.get('/country-images', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
+
 
 
 
