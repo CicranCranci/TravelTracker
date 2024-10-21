@@ -4,22 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="description" content="Track your travel history and visited countries with this interactive tool.">
-<meta name="keywords" content="Travel, Tracker, Countries, Map, Visited">
-<meta name="author" content="Cristian Andrei Ciuparu">
-
-
-
+  <meta name="description" content="Track your travel history and visited countries with this interactive tool.">
+  <meta name="keywords" content="Travel, Tracker, Countries, Map, Visited">
+  <meta name="author" content="Cristian Andrei Ciuparu">
   <title>Travel Tracker</title>
   <link rel="stylesheet" href="./styles/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" defer>
-
-
 </head>
 
 <body>
-
   <!-- Modal for Zoomed Image -->
   <div id="image-modal" class="modal">
     <span class="close-modal">&times;</span>
@@ -47,22 +40,7 @@
         </div>
       </div>
 
-      <div id="visited-countries-container" class="dropdown-container">
-        <h3 id="visited-countries-toggle" class="dropdown-toggle">
-          <span>Total Visited Countries</span>
-          <span id="visited-countries-count" class="count">
-            <%= visitedCountries.length %>
-          </span>
-          <span class="dropdown-icon">&#9660;</span>
-        </h3>
-        <ul id="visited-countries-list" class="dropdown-menu">
-          <% visitedCountries.forEach(function(country) { %>
-            <li>
-              <%= country %>
-            </li>
-            <% }); %>
-        </ul>
-      </div>
+      
     </div>
 
     <section class="ag-canvas">
@@ -454,6 +432,7 @@
   </select>
   
   </div>
+  
   <footer class="sticky-footer">
     <div class="footer-content">
       <p>Powered by <a href="https://cicrancranci.ro" target="_blank">CicranCranci</a></p>
@@ -464,15 +443,14 @@
               class="fab fa-linkedin" aria-label="LinkedIn"></i></a></li>
         <li><a href="https://www.upwork.com/freelancers/~011026a4118009b633" target="_blank" title="Upwork"><i
               class="fas fa-briefcase" aria-label="Upwork"></i></a></li>
-        <li><a href="https://www.fiverr.com/cicran?up_rollout=true" target="_blank" title="Fiverr"><i class="fas fa-handshake"
-              aria-label="Fiverr"></i></a></li>
-        <li><a href="mailto:cicrancranci@gmail.com" title="Email"><i class="fas fa-envelope" aria-label="Email"></i></a></li>
-
+        <li><a href="https://www.fiverr.com/cicran?up_rollout=true" target="_blank" title="Fiverr"><i
+              class="fas fa-handshake" aria-label="Fiverr"></i></a></li>
+        <li><a href="mailto:cicrancranci@gmail.com" title="Email"><i class="fas fa-envelope" aria-label="Email"></i></a>
+        </li>
       </ul>
       <p>&copy; 2024 CicranCranci. All rights reserved.</p>
     </div>
   </footer>
-
   
   <script src="/scripts/main.js"></script>
   <script src="/scripts/countryImages.js"></script>

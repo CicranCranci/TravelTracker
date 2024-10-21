@@ -23,13 +23,14 @@ const app = express();
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
+  database: process.env.DB_DATABASE, // updated from DB_NAME to DB_DATABASE
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   ssl: {
     rejectUnauthorized: false, // This is needed for Render
   },
 });
+
 
 // Configure multer for file uploads
 const upload = multer({ dest: 'public/uploads/' });
